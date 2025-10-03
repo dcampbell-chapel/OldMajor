@@ -15,6 +15,8 @@
             border-radius: 4px;
             transition: background-color 0.2s ease;
             line-height: 1.6;
+            /* Make text smaller to fit more on screen when split by sentence */
+            font-size: 0.875rem; /* text-sm */
         }
 
         .text-container p:hover {
@@ -66,7 +68,7 @@
 
     <div class="container mx-auto p-4 md:p-8">
         <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">Rhetorical Appeals Comparison</h1>
-        <p class="text-xl text-gray-600 mb-6">Annotate Karl Marx's *Manifesto* and Old Major's speech for Logos, Pathos, and Ethos.</p>
+        <p class="text-xl text-gray-600 mb-6">Annotate Karl Marx's *Manifesto* and Old Major's speech for Logos, Pathos, and Ethos. (Click sentence to highlight, double-click to clear.)</p>
 
         <!-- Annotation Controls -->
         <div id="controls" class="bg-white p-4 md:p-6 rounded-xl shadow-lg mb-8 sticky top-0 z-10 border border-gray-200 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
@@ -109,161 +111,68 @@
     </div>
 
     <script>
-        // Data for the speeches, split into paragraphs for individual annotation
+        // Data for the speeches, split into individual sentences for precise annotation.
         const manifestoText = [
-            "A powerful ghost is haunting Europe—the ghost of communism. All the old powers of Europe have joined together in a \"holy alliance\" to defeat this phantasm: the Pope, the Tsar, powerful politicians like Metternich and Guizot, French radicals, and German spies.",
+            "A powerful ghost is haunting Europe—the ghost of communism.",
+            "All the old powers of Europe have joined together in a \"holy alliance\" to defeat this phantasm: the Pope, the Tsar, powerful politicians like Metternich and Guizot, French radicals, and German spies.",
             "Has there been any political group challenging those in power that hasn't been attacked and called \"communistic\"? No.",
             "Two things are clear from this: All European powers already recognize Communism as a powerful force.",
-            "It’s time for Communists to openly declare their beliefs, goals, and intentions to the entire world. They must answer this \"ghost story\" of the Spectre of Communism with an official statement—a manifesto—from the party itself.",
+            "It’s time for Communists to openly declare their beliefs, goals, and intentions to the entire world.",
+            "They must answer this \"ghost story\" of the Spectre of Communism with an official statement—a manifesto—from the party itself.",
             "For this reason, Communists from many different countries have met in London and written the following manifesto.",
             "The history of every society that has ever existed is a history of class struggles.",
             "Free citizens against slaves, Wealthy nobles against common citizens, Lords against serfs, Guild-masters against journeymen,",
-            "In every age, it has been the oppressor versus the oppressed. They were always in constant conflict, fighting a never-ending battle that was sometimes hidden and sometimes open. This fight always ended in one of two ways: A complete, revolutionary change of society or the total ruin of both sides.",
-            "Our current era, the age of the bourgeoisie (the ruling, property-owning class), has one key difference: it has simplified the struggle between classes. Society is increasingly splitting into two main hostile groups, two great classes directly facing each other: the Bourgeoisie (the rich owners) and the Proletariat (the working class).",
-            "The modern Bourgeoisie is not ancient; it is the result of a long process of change and a series of revolutions in how goods are produced and traded. With every step of the Bourgeoisie's growth, they gained more political power. Once oppressed by the feudal nobility, the Bourgeoisie finally, after creating modern industry and a global market, took over complete political control in the modern representative government. The government today is nothing more than a committee for managing the collective business of the whole Bourgeoisie.",
-            "Historically, the Bourgeoisie has played a truly revolutionary role. Wherever they have taken control, they have destroyed all the old, traditional ways of life—the feudal, family-based, and peaceful-seeming relationships.",
-            "They have mercilessly ripped apart the diverse feudal ties that connected people to their \"natural superiors.\" Now, the only connection left between people is naked self-interest and cold, hard \"cash payment.\" The Bourgeoisie has drowned the most passionate feelings—religious excitement, knightly honor, sentimental pity—in the icy water of selfish calculation.",
-            "It has reduced a person's value to a simple exchange price (how much their labor is worth), and in place of countless sacred, guaranteed freedoms, it has established just one unethical freedom—Free Trade. In a word, for exploitation that was once hidden by religious and political illusions, it has substituted naked, shameless, direct, brutal exploitation.",
-            "The Bourgeoisie has stripped the honor from every job that was once respected and looked upon with admiration. It has turned the doctor, the lawyer, the priest, the poet, and the scientist into its paid wage-laborers.",
+            "In every age, it has been the oppressor versus the oppressed.",
+            "They were always in constant conflict, fighting a never-ending battle that was sometimes hidden and sometimes open.",
+            "This fight always ended in one of two ways: A complete, revolutionary change of society or the total ruin of both sides.",
+            "Our current era, the age of the bourgeoisie (the ruling, property-owning class), has one key difference: it has simplified the struggle between classes.",
+            "Society is increasingly splitting into two main hostile groups, two great classes directly facing each other: the Bourgeoisie (the rich owners) and the Proletariat (the working class).",
+            "The modern Bourgeoisie is not ancient; it is the result of a long process of change and a series of revolutions in how goods are produced and traded.",
+            "With every step of the Bourgeoisie's growth, they gained more political power.",
+            "Once oppressed by the feudal nobility, the Bourgeoisie finally, after creating modern industry and a global market, took over complete political control in the modern representative government.",
+            "The government today is nothing more than a committee for managing the collective business of the whole Bourgeoisie.",
+            "Historically, the Bourgeoisie has played a truly revolutionary role.",
+            "Wherever they have taken control, they have destroyed all the old, traditional ways of life—the feudal, family-based, and peaceful-seeming relationships.",
+            "They have mercilessly ripped apart the diverse feudal ties that connected people to their \"natural superiors.\"",
+            "Now, the only connection left between people is naked self-interest and cold, hard \"cash payment.\"",
+            "The Bourgeoisie has drowned the most passionate feelings—religious excitement, knightly honor, sentimental pity—in the icy water of selfish calculation.",
+            "It has reduced a person's value to a simple exchange price (how much their labor is worth), and in place of countless sacred, guaranteed freedoms, it has established just one unethical freedom—Free Trade.",
+            "In a word, for exploitation that was once hidden by religious and political illusions, it has substituted naked, shameless, direct, brutal exploitation.",
+            "The Bourgeoisie has stripped the honor from every job that was once respected and looked upon with admiration.",
+            "It has turned the doctor, the lawyer, the priest, the poet, and the scientist into its paid wage-laborers.",
             "The Bourgeoisie cannot survive without constantly revolutionizing the tools of production, and with them, all of society's relationships.",
-            "Constant revolutionizing of production. Uninterrupted disruption of all social conditions. Everlasting uncertainty and constant activity.",
-            "These things set the bourgeois era apart from all others. All fixed, old relationships, along with their long history of accepted prejudices, are swept away. All new relationships become outdated before they can even become permanent.",
+            "Constant revolutionizing of production.",
+            "Uninterrupted disruption of all social conditions.",
+            "Everlasting uncertainty and constant activity.",
+            "These things set the bourgeois era apart from all others.",
+            "All fixed, old relationships, along with their long history of accepted prejudices, are swept away.",
+            "All new relationships become outdated before they can even become permanent.",
             "\"All that is solid melts into air,\" and humanity is finally forced to face the real conditions of its life and its relationship with others.",
-            "The need for a constantly expanding market chases the Bourgeoisie all over the world. They must settle everywhere, connect everywhere, and establish connections everywhere.",
-            "The low prices of their goods are like heavy artillery used to knock down any defense, including the strong resistance of foreigners to change. They force all nations, on pain of being destroyed, to adopt the bourgeois way of production; they compel them to introduce what they call \"civilization\"—which really means to become bourgeois themselves.",
+            "The need for a constantly expanding market chases the Bourgeoisie all over the world.",
+            "They must settle everywhere, connect everywhere, and establish connections everywhere.",
+            "The low prices of their goods are like heavy artillery used to knock down any defense, including the strong resistance of foreigners to change.",
+            "They force all nations, on pain of being destroyed, to adopt the bourgeois way of production; they compel them to introduce what they call \"civilization\"—which really means to become bourgeois themselves.",
             "In a single word: they are creating a world in their own image.",
             "During its short rule of less than a hundred years, the Bourgeoisie has created more massive and colossal productive power than all previous generations combined.",
-            "However, modern bourgeois society is like a sorcerer who has lost control of the powerful forces he conjured up with his spells. For many decades, the history of industry has been a history of the powerful, modern ways of producing things rebelling against the current conditions of production—the very property laws that the Bourgeoisie needs to exist and rule.",
-            "The commercial crises (economic depressions) that happen periodically prove this. Each time they return, they threaten the existence of all bourgeois society.",
-            "It is now clear that the Bourgeoisie is no longer fit to be the ruling class in society. They are unfit to rule because they are unable to guarantee a living for their own workers, their \"slaves.\" They cannot prevent their workers from sinking into such poverty that the Bourgeoisie must feed them, instead of being fed by their work. Society can no longer live under the Bourgeoisie's rule.",
-            "The essential condition for the existence of the bourgeois class is the creation and growth of capital (wealth); the condition for capital is wage-labor. Wage-labor relies exclusively on the competition between workers.",
-            "But the growth of industry, which the Bourgeoisie unknowingly promotes, is replacing the workers' isolation (due to competition) with a revolutionary alliance (due to working together). Therefore, the development of Modern Industry is destroying the very foundation on which the Bourgeoisie produces wealth.",
+            "However, modern bourgeois society is like a sorcerer who has lost control of the powerful forces he conjured up with his spells.",
+            "For many decades, the history of industry has been a history of the powerful, modern ways of producing things rebelling against the current conditions of production—the very property laws that the Bourgeoisie needs to exist and rule.",
+            "The commercial crises (economic depressions) that happen periodically prove this.",
+            "Each time they return, they threaten the existence of all bourgeois society.",
+            "It is now clear that the Bourgeoisie is no longer fit to be the ruling class in society.",
+            "They are unfit to rule because they are unable to guarantee a living for their own workers, their \"slaves.\"",
+            "They cannot prevent their workers from sinking into such poverty that the Bourgeoisie must feed them, instead of being fed by their work.",
+            "Society can no longer live under the Bourgeoisie's rule.",
+            "The essential condition for the existence of the bourgeois class is the creation and growth of capital (wealth); the condition for capital is wage-labor.",
+            "Wage-labor relies exclusively on the competition between workers.",
+            "But the growth of industry, which the Bourgeoisie unknowingly promotes, is replacing the workers' isolation (due to competition) with a revolutionary alliance (due to working together).",
+            "Therefore, the development of Modern Industry is destroying the very foundation on which the Bourgeoisie produces wealth.",
             "What the Bourgeoisie produces, above all else, are its own grave-diggers.",
             "Its fall and the victory of the proletariat are equally inevitable."
         ];
 
         const oldMajorText = [
-            "“Comrades, you have heard already about the strange dream that I had last night. But I will come to the dream later. I have something else to say first. I do not think, comrades, that I shall be with you for many months longer, and before I die, I feel it my duty to pass on to you such wisdom as I have acquired. I have had a long life, I have had much time for thought as I lay alone in my stall, and I think I may say that I understand the nature of life on this earth as well as any animal now living. It is about this that I wish to speak to you.",
-            "Now, comrades, what is the nature of this life of ours? Let us face it: our lives are miserable, laborious, and short. We are born, we are given just so much food as will keep the breath in our bodies, and those of us who are capable of it are forced to work to the last atom of our strength; and the very instant that our usefulness has come to an end we are slaughtered with hideous cruelty. No animal in England knows the meaning of happiness or leisure after he is a year old. No animal in England is free. The life of an animal is misery and slavery: that is the plain truth.",
-            "But is this simply part of the order of nature? Is it because this land of ours is so poor that it cannot afford a decent life to those who dwell upon it? No, comrades, a thousand times no! The soil of England is fertile, its climate is good, it is capable of affording food in abundance to an enormously greater number of animals than now inhabit it. This single farm of ours would support a dozen horses, twenty cows, hundreds of sheep-and all of them living in a comfort and a dignity that are now almost beyond our imagining. Why then do we continue in this miserable condition? Because nearly the whole of the produce of our labour is stolen from us by human beings. There, comrades, is the answer to all our problems. It is summed up in a single word-Man. Man is the only real enemy we have. Remove Man from the scene, and the root cause of hunger and overwork is abolished for ever.",
-            "Man is the only creature that consumes without producing. He does not give milk, he does not lay eggs, he is too weak to pull the plough, he cannot run fast enough to catch rabbits. Yet he is lord of all the animals. He sets them to work, he gives back to them the bare minimum that will prevent them from starving, and the rest he keeps for himself. Our labour tills the soil, our dung fertilises it, and yet there is not one of us that owns more than his bare skin. You cows that I see before me, how many thousands of gallons of milk have you given during this last year? And what has happened to that milk which should have been breeding up sturdy calves? Every drop of it has gone down the throats of our enemies. And you hens, how many eggs have you laid in this last year, and how many of those eggs ever hatched into chickens? The rest have all gone to market to bring in money for Jones and his men. And you, Clover, where are those four foals you bore, who should have been the support and pleasure of your old age? Each was sold at a year old-you will never see one of them again. In return for your four confinements and all your labour in the fields, what have you ever had except your bare rations and a stall?",
-            "And even the miserable lives we lead are not allowed to reach their natural span. For myself I do not grumble, for I am one of the lucky ones. I am twelve years old and have had over four hundred children. Such is the natural life of a pig. But no animal escapes the cruel knife in the end. You young porkers who are sitting in front of me, every one of you will scream your lives out at the block within a year. To that horror we all must come-cows, pigs, hens, sheep, everyone. Even the horses and the dogs have no better fate. You, Boxer, the very day that those great muscles of yours lose their power, Jones will sell you to the knacker, who will cut your throat and boil you down for the foxhounds. As for the dogs, when they grow old and toothless, Jones ties a brick round their necks and drowns them in the nearest pond.",
-            "Is it not crystal clear, then, comrades, that all the evils of this life of ours spring from the tyranny of human beings? Only get rid of Man, and the produce of our labour would be our own. A1most overnight we could become rich and free. What then must we do? Why, work night and day, body and soul, for the overthrow of the human race! That is my message to you, comrades: Rebellion! I do not know when that Rebellion will come, it might be in a week or in a hundred years, but I know, as surely as I see this straw beneath my feet, that sooner or later justice will be done. Fix your eyes on that, comrades, throughout the short remainder of your lives! And above all, pass on this message of mine to those who come after you, so that future generations shall carry on the struggle until it is victorious.",
-            "And remember, comrades, your resolution must never falter. No argument must lead you astray. Never listen when they tell you that Man and the animals have a common interest, that the prosperity of the one is the prosperity of the others. It is all lies. Man serves the interests of no creature except himself. And among us animals let there be perfect unity, perfect comradeship in the struggle. All men are enemies. All animals are comrades.”",
-            "Comrades, here is a point that must be settled. The wild creatures, such as rats and rabbits-are they our friends or our enemies? Let us put it to the vote. I propose this question to the meeting: Are rats comrades?",
-            "I have little more to say. I merely repeat, remember always your duty of enmity towards Man and all his ways. Whatever goes upon two legs is an enemy. Whatever goes upon four legs, or has wings, is a friend. And remember also that in fighting against Man, we must not come to resemble him. Even when you have conquered him, do not adopt his vices. No animal must ever live in a house, or sleep in a bed, or wear clothes, or drink alcohol, or smoke tobacco, or touch money, or engage in trade. All the habits of Man are evil. And, above all, no animal must ever tyrannise over his own kind. Weak or strong, clever or simple, we are all brothers. No animal must ever kill any other animal. All animals are equal.",
-            "And now, comrades, I will tell you about my dream of last night. I cannot describe that dream to you. It was a dream of the earth as it will be when Man has vanished. But it reminded me of something that I had long forgotten. Many years ago, when I was a little pig, my mother and the other sows used to sing an old song of which they knew only the tune and the first three words. I had known that tune in my infancy, but it had long since passed out of my mind. Last night, however, it came back to me in my dream. And what is more, the words of the song also came back-words, I am certain, which were sung by the animals of long ago and have been lost to memory for generations. I will sing you that song now, comrades. I am old and my voice is hoarse, but when I have taught you the tune, you can sing it better for yourselves. It is called Beasts of England.”"
-        ];
-
-        // Global state for the currently selected appeal
-        let currentAppeal = 'logos'; // Default selection
-
-        /**
-         * Renders the text arrays into the respective container elements.
-         * Each paragraph is wrapped in a <p> tag for individual annotation.
-         * @param {string[]} textArray - Array of strings (paragraphs).
-         * @param {string} containerId - ID of the target div.
-         */
-        function renderText(textArray, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = textArray.map((paragraph, index) =>
-                `<p class="annotatable-segment" data-index="${index}">${paragraph}</p>`
-            ).join('');
-        }
-
-        /**
-         * Clears all existing annotation classes from an element.
-         * @param {HTMLElement} element
-         */
-        function clearAnnotation(element) {
-            element.classList.remove('logos', 'pathos', 'ethos');
-            element.removeAttribute('data-appeal');
-        }
-
-        /**
-         * Handles the click event on a paragraph to apply the annotation.
-         * @param {Event} event
-         */
-        function handleSegmentClick(event) {
-            const segment = event.target;
-            if (segment.tagName !== 'P' || !segment.classList.contains('annotatable-segment')) {
-                return;
-            }
-
-            // Remove existing annotation classes
-            clearAnnotation(segment);
-
-            // Apply the new annotation class
-            segment.classList.add(currentAppeal);
-            segment.setAttribute('data-appeal', currentAppeal);
-        }
-
-        /**
-         * Handles the double-click event to clear a specific annotation.
-         * @param {Event} event
-         */
-        function handleSegmentDoubleClick(event) {
-            event.preventDefault(); // Prevent text selection on double click
-            const segment = event.target;
-            if (segment.tagName === 'P' && segment.classList.contains('annotatable-segment')) {
-                clearAnnotation(segment);
-            }
-        }
-
-        /**
-         * Handles the click on the control buttons to change the active appeal.
-         * @param {Event} event
-         */
-        function handleControlClick(event) {
-            const button = event.target.closest('.control-button');
-            if (!button || button.id === 'clear-all-btn') return;
-
-            // Update global state
-            currentAppeal = button.dataset.appeal;
-
-            // Update button styles (active state)
-            document.querySelectorAll('.control-button').forEach(btn => {
-                if (btn.dataset.appeal) {
-                    btn.classList.remove('active');
-                }
-            });
-            button.classList.add('active');
-        }
-
-        /**
-         * Clears all annotations from both text containers.
-         */
-        function handleClearAll() {
-            document.querySelectorAll('.annotatable-segment').forEach(clearAnnotation);
-            // Optionally notify the user (using a console log since alert is forbidden)
-            console.log('All annotations cleared.');
-        }
-
-        // --- Initialization on window load ---
-        window.onload = function() {
-            // 1. Render the text content
-            renderText(manifestoText, 'manifesto-text');
-            renderText(oldMajorText, 'old-major-text');
-
-            // 2. Attach event listeners for annotation
-            const textContainers = document.querySelectorAll('.text-container');
-            textContainers.forEach(container => {
-                // Single click to annotate
-                container.addEventListener('click', handleSegmentClick);
-                // Double click to clear
-                container.addEventListener('dblclick', handleSegmentDoubleClick);
-            });
-
-            // 3. Attach event listeners for controls
-            const controls = document.getElementById('controls');
-            controls.addEventListener('click', handleControlClick);
-
-            // 4. Attach event listener for Clear All button
-            document.getElementById('clear-all-btn').addEventListener('click', handleClearAll);
-
-            // Log the initial state
-            console.log(`Annotation tool initialized. Current mode: ${currentAppeal}`);
-        };
-    </script>
-</body>
-</html>
+            "“Comrades, you have heard already about the strange dream that I had last night.",
+            "But I will come to the dream later.",
+            "I have something else to say first.",
+            "I do not think, comrades, that I shall be with you for many months longer, and before I die, I feel it my duty to pass on to you such wisdom as I have acquired.",
+            "I have had a long life, I have had much time for thought as I lay alone in my stall, and I think I may say that I understand the nature of life on this earth as well as
